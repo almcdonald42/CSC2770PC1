@@ -5,6 +5,10 @@
 #define MATRIX_SIZE 3
 #define NUM_THREADS 3
 
+// Added these two lines, step 3 mutex
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+int calculationCount = 0;
+
 int matrixA[MATRIX_SIZE][MATRIX_SIZE];
 int matrixB[MATRIX_SIZE][MATRIX_SIZE];
 int resultMatrix[MATRIX_SIZE][MATRIX_SIZE];
@@ -19,6 +23,10 @@ void *multiply(void *arg) {
 
     for (int i = 0; i < MATRIX_SIZE; i++) {
         resultMatrix[data->row][data->col] += matrixA[data->row][i] * matrixB[i][data->col];
+ //Added this: Step 3, sum should be calculated in the multiply() function and protected with a mutex
+        pthread_mutex_lock(&mutex);
+        calculationCount++;
+        pthread_mutex_unlock(&mutex); 
     }
 
     pthread_exit(NULL);
@@ -63,6 +71,9 @@ int main() {
         }
         printf("\n");
     }
+
+    // step 4: print the number of completed calculations
+    printf("The number of completed calculations is %d\n", calculationCount);
 
     return 0;
 }
