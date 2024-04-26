@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -pthread
 
 SRCS = ThreadedMatrixMultiply.c
-# added this line from sample format
+# added this line, changed sample format
 OBJS = $(SRCS:.c=.o)
 TARGET = ThreadedMatrixMultiply
 
